@@ -1,0 +1,22 @@
+<ul>
+<%  @grid.each do |letter| %>
+  <li><%= letter %></>
+<% end %>
+</ul>
+
+
+<form name="game" method="post" action="/play">
+<input name="utf8" type="hidden" value="&#x2713;" />
+<input name="time_start" type="hidden" value="<%= Time.now %>" />
+<input name="score" type="hidden" value="<%= @score %>" />
+<input name="grid" type="hidden" value="<%= @grid.join(',') %>" />
+<input name="authenticity_token" type="hidden" value="J7CBxfHalt49OSHp27hblqK20c9PgwJ108nDHX/8Cts=" />
+<input id="word" name="word" type="text" placeholder="Find the longuest word you can."/>
+<input id="submit" name="submit" type="submit" value="Search"/>
+<body OnLoad="document.game.word.focus();">
+</form>
+
+<h2>Your score: <%= @score %> points</h2>
+<% if @round_score %>
+  <p><%= @message %> | You scored <%= @round_score.floor %></p>
+<% end %>
