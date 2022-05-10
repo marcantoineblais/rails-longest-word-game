@@ -16,7 +16,8 @@ class GamesController < ApplicationController
   def play
     @data = JSON.parse(URI.open("https://wagon-dictionary.herokuapp.com/#{params['word']}").read)
     @grid = generate_grid(10)
-    @score = params['score'].to_i || 0
+    @score = params['score']&.to_i || 0
+    @turns_left = params['turns_left']&.to_i || 5
     score if params['word']
   end
 
@@ -27,6 +28,7 @@ class GamesController < ApplicationController
     total_time = time_end - params['time_start'].to_datetime
     @round_score = word_validation? ? (@data['length'] * 100) / total_time : 0
     @score += @round_score.floor
+    @turns_left -= 1
   end
 
   def enough_vowels?(grid_array)
@@ -50,7 +52,7 @@ class GamesController < ApplicationController
       @message = 'Good job!'
       true
     else
-      @message = 'invalid word :('
+      @message = 'Invalid word :('
       false
     end
   end
